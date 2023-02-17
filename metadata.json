@@ -1,0 +1,29 @@
+{ 
+  "description": "All sons of Adam makes mistake and the best are the repentant",
+  "external_url": "https://www.twitter.com/WiseMrMusa",
+  "image": "https://ipfs.filebase.io/ipfs/QmWxdPGkhPUgRfoLMr6tbAq4QwHCsf3A5vGnGfp7n9aczX",
+  "name": "An Amazing Person", 
+  "attributes": [
+    {
+        "trait_type": "owner",
+        "value": "Wise Mr Musa"
+
+  },
+    {
+      "trait_type": "Value", 
+      "value": "Rejuvanation"
+    },
+    {
+      "trait_type": "Religion", 
+      "value": "Islam"
+    },
+    {
+      "trait_type": "Ramadan", 
+      "value": "Piety"
+    },
+    {
+      "trait_type": "Ramadan", 
+      "value": "Glorious Month"
+    }
+]
+  }
