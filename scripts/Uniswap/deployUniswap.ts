@@ -57,16 +57,24 @@ async function main() {
 
   console.log(green(`######### ADD LIQUIDITY ETH ############`));
 
+  console.log(`######### BEFORE ######`);
+  console.log(`The DAI Holder Balance ${await UNI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
+  console.log(`The ETH Balance ${await ethers.provider.getBalance(DAIHolder)}`);
+
   // await UNI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,1_000);
   await UNI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,200_000);
-  console.log(await UniswapRouterContract.connect(DAI_Signer).addLiquidityETH(
+  await UniswapRouterContract.connect(DAI_Signer).addLiquidityETH(
     UNI_TOKEN_ADDRESS,
-    1_000,
+    await ethers.utils.parseEther("10"),
     0,
-    await ethers.utils.parseEther("3"),
+    0,
     DAIHolder,
     1680307199
-    ))
+    ,{value: 10})
+
+    console.log(`######### AFTER ######`);
+    console.log(`The DAI Holder Balance ${await UNI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
+    console.log(`The ETH Balance ${await ethers.provider.getBalance(DAIHolder)}`);
 
 
   /** REMOVE LIQUIDITY */
