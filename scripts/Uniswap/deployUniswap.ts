@@ -28,33 +28,62 @@ async function main() {
   /** ADD LIQUIDITY */
   // console.log(green(`######### ADD LIQUIDITY ############`));
 
-  // await UNI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,1_000);
-  // await DAI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,2_000);
-  // console.log(await UniswapRouterContract.addLiquidity(
+  // // Get the balance of the DAI Holder
+  // console.log(`###### BEFORE ######`);
+  // console.log(`The DAI Holder Balance ${await DAI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
+  // console.log(`The UNI Balance ${await UNI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
+
+  // await UNI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,20000);
+  // await DAI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,25000);
+  // const  [ amountA, amountB, liquidity ] = await UniswapRouterContract.connect(DAI_Signer).addLiquidity(
   //   UNI_TOKEN_ADDRESS,
   //   DAI_TOKEN_ADDRESS,
-  //   1_000,
-  //   2_000,
+  //   100,
+  //   30,
   //   0,
   //   0,
   //   DAIHolder,
   //   1680307199
-  //   ))
+  //   ).then(e => e.wait().then(e => e.events[0].topics))
+
+  //   // console.log(amountA, amountB, liquidity)
+
+  //     // Get the balance of the DAI Holder
+  // console.log(`######### AFTER ##############`);
+  // console.log(`The DAI Holder Balance ${await DAI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
+  // console.log(`The UNI Balance ${await UNI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
 
   /** ADD LIQUIDITY ETH */
 
   console.log(green(`######### ADD LIQUIDITY ETH ############`));
 
   // await UNI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,1_000);
-  await DAI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,100_000);
-  console.log(await UniswapRouterContract.addLiquidityETH(
-    DAI_TOKEN_ADDRESS,
-    10_000,
+  await UNI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,200_000);
+  console.log(await UniswapRouterContract.connect(DAI_Signer).addLiquidityETH(
+    UNI_TOKEN_ADDRESS,
+    1_000,
     0,
-    await ethers.utils.parseEther("1000000"),
+    await ethers.utils.parseEther("3"),
     DAIHolder,
     1680307199
     ))
+
+
+  /** REMOVE LIQUIDITY */
+
+  console.log(green(`######### REMOVE LIQUIDITY ############`));
+
+  // // await UNI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,1_000);
+  // await DAI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,100_000);
+  // console.log(await UniswapRouterContract.removeLiquidity(
+  //   UNI_TOKEN_ADDRESS,
+  //   DAI_TOKEN_ADDRESS,
+  //   1_000,
+  //   2_000,
+  //   0,
+  //   DAIHolder,
+  //   1680307199
+  //   ))
 
 
   }
