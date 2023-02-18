@@ -26,32 +26,32 @@ async function main() {
 
 
   /** ADD LIQUIDITY */
-  // console.log(green(`######### ADD LIQUIDITY ############`));
+  console.log(green(`######### ADD LIQUIDITY ############`));
 
-  // // Get the balance of the DAI Holder
-  // console.log(`###### BEFORE ######`);
-  // console.log(`The DAI Holder Balance ${await DAI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
-  // console.log(`The UNI Balance ${await UNI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
+  // Get the balance of the DAI Holder
+  console.log(`###### BEFORE ######`);
+  console.log(`The DAI Holder Balance ${await DAI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
+  console.log(`The UNI Balance ${await UNI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
 
-  // await UNI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,20000);
-  // await DAI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,25000);
-  // const  [ amountA, amountB, liquidity ] = await UniswapRouterContract.connect(DAI_Signer).addLiquidity(
-  //   UNI_TOKEN_ADDRESS,
-  //   DAI_TOKEN_ADDRESS,
-  //   100,
-  //   30,
-  //   0,
-  //   0,
-  //   DAIHolder,
-  //   1680307199
-  //   ).then(e => e.wait().then(e => e.events[0].topics))
+  await UNI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,20000);
+  await DAI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,25000);
+  const  [ amountA, amountB, liquidity ] = await UniswapRouterContract.connect(DAI_Signer).addLiquidity(
+    UNI_TOKEN_ADDRESS,
+    DAI_TOKEN_ADDRESS,
+    100,
+    30,
+    0,
+    0,
+    DAIHolder,
+    1680307199
+    ).then(e => e.wait().then(e => e.events[0].topics))
 
-  //   // console.log(amountA, amountB, liquidity)
+    // console.log(amountA, amountB, liquidity)
 
-  //     // Get the balance of the DAI Holder
-  // console.log(`######### AFTER ##############`);
-  // console.log(`The DAI Holder Balance ${await DAI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
-  // console.log(`The UNI Balance ${await UNI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
+      // Get the balance of the DAI Holder
+  console.log(`######### AFTER ##############`);
+  console.log(`The DAI Holder Balance ${await DAI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
+  console.log(`The UNI Balance ${await UNI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
 
   /** ADD LIQUIDITY ETH */
 
@@ -75,25 +75,40 @@ async function main() {
     console.log(`######### AFTER ######`);
     console.log(`The DAI Holder Balance ${await UNI_TOKEN_CONTRACT.balanceOf(DAIHolder)}`);
     console.log(`The ETH Balance ${await ethers.provider.getBalance(DAIHolder)}`);
-
-
-  /** REMOVE LIQUIDITY */
-
-  console.log(green(`######### REMOVE LIQUIDITY ############`));
-
-  // // await UNI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,1_000);
-  // await DAI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,100_000);
-  // console.log(await UniswapRouterContract.removeLiquidity(
-  //   UNI_TOKEN_ADDRESS,
-  //   DAI_TOKEN_ADDRESS,
-  //   1_000,
-  //   2_000,
-  //   0,
-  //   DAIHolder,
-  //   1680307199
-  //   ))
-
-
+    
+    
+    /** REMOVE LIQUIDITY */
+    
+    console.log(green(`######### REMOVE LIQUIDITY ############`));
+    
+    const UniswapV2Factory = await ethers.getContractAt("IUniswapV2Factory", "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f");
+    
+    
+    const pairAddress = await UniswapV2Factory.connect(DAI_Signer).getPair(UNI_TOKEN_ADDRESS, DAI_TOKEN_ADDRESS);
+    const pairToken = await ethers.getContractAt("IERC20",pairAddress);
+    const balance = await pairToken.balanceOf(DAIHolder);
+    console.log(`######### BEFORE ######`);
+    console.log(balance);
+    
+    
+    // await UNI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,1_000);
+    await pairToken.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,80);
+    // await pairToken.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,8);
+    // await DAI_TOKEN_CONTRACT.connect(DAI_Signer).approve(UNISWAP_ROUTER_ADDRESS,100_000);
+    const remove = await UniswapRouterContract.connect(DAI_Signer).removeLiquidity(
+      UNI_TOKEN_ADDRESS,
+      DAI_TOKEN_ADDRESS,
+      balance,
+      0,
+      0,
+      DAIHolder,
+      1680307199
+      )
+      
+      const balanceAfter = await pairToken.balanceOf(DAIHolder);
+      console.log(`######### AFTER ######`);
+      console.log(balanceAfter);
+      
   }
 
  
